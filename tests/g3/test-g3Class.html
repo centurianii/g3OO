@@ -1,0 +1,529 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset=utf-8>
+   <title>Evaluator: Test js class libraries</title>
+   <!-- my source files (g3), necessary libraries (jquery) and my tests folder (tests):
+      client
+        :
+        |-jquery
+        :  :
+        |-g3
+        :  |- &lt;g3Class.js>
+        :  :
+        |-tests
+        |  |-jasmine-standalone-2.0.0
+        |  |  |-lib
+        |  |  |-spec
+        :  :  :
+        |  |-g3
+        |  :  |- &lt;g3Class-SpecRunner.html>
+        |  :  |- &lt;g3Class-Spec.js>
+        |  :  |- &lt;g3Class-SpecHelper.js>
+        |  :  |- g3evaluator.css
+        |  :  |- g3evaluator.js
+        |  :  |- g3evaluator.html (rename this file to test-g3Class.html)
+        :  :  :
+   -->
+   <link rel="stylesheet" type="text/css" href="../../view/g3evaluator/g3evaluator.css">
+</head>
+<body>
+
+<div id="title"><h1 contenteditable="false">Evaluator: Test js class libraries<br></h1><span class="">[edit]</span></div><div id="stub" class=""></div><form id="loadFrame">
+<fieldset>
+   <legend class="hover"><b>Manage stub/frame</b></legend>
+   <div style="display: none;" class="hide">
+   <label class="label" for="frameSrc">Frame source:</label><input id="frameSrc" size="30" type="text"><br>
+   <input value="Load file in frame" type="button"><input value="Remove frame" type="button"><br>
+   <input value="Clone frame to stub-HEAD" type="button"><input value="Remove cloned" type="button">
+   </div>
+</fieldset>
+</form><form id="bodyHtml">
+<fieldset>
+   <legend class="hover"><b>Load body html (no &lt;script&gt;)</b></legend>
+   <div class="hide">
+   <textarea rows="5" wrap="virtual"></textarea><br>
+   <input value="Load" type="button"><input value="Clear" type="button"><br>
+   <label class="label" for="exclName">Exclude ids:</label><input id="exclName" size="30" type="text">
+   seperate by space or comma or semicolon or vertical bar: [ ,;|]
+   </div>
+</fieldset>
+</form><div id="libraryWrapper">
+<form id="addRemoveLib">
+<fieldset>
+   <legend class="hover">Add/Remove library</legend>
+   <div style="display: none;" class="hide">
+   <label class="label" for="libName">Script id:</label><input id="libName" size="30" type="text"><br>
+   <label class="label" for="libPath">Path:</label><input id="libPath" size="30" type="text"><br>
+   <input value="Add" type="button"><input value="Remove" type="button">
+   </div>
+</fieldset>
+</form>
+<form id="optional-addRemoveLib">
+<fieldset>
+   <legend class="hover">Add/Remove optional library</legend>
+   <div style="display: none;" class="hide">
+   <label class="label" for="libName">Script id:</label><input id="optional-libName" size="30" type="text"><br>
+   <label class="label" for="libPath">Path:</label><input id="optional-libPath" size="30" type="text"><br>
+   <input value="Add" type="button"><input value="Remove" type="button">
+   </div>
+</fieldset>
+</form>
+</div><div class="clearWrapper"></div><p><span><label class="label" for="loadall">Load all:</label><input id="loadall" type="checkbox"></span>(the order is significant, if errors repeat!)</p><div id="libraryWrapper">
+<form id="libraries">
+<fieldset>
+   <legend>Load library</legend>
+   <label class="label" for="hdNj4">DominikGuzei.Class.Interface</label><input id="hdNj4" value="../../g3/g3Class.js" type="checkbox"><br><label class="label" for="t8Su6">DominikGuzei.Class</label><input id="t8Su6" value="../../g3/class.js" type="checkbox"><br><label class="label" for="Qs4dp">g3Class</label><input id="Qs4dp" value="../../g3/g3Class.js" type="checkbox"><br></fieldset>
+</form>
+<form id="optional-libraries">
+<fieldset>
+   <legend>Optional</legend>
+</fieldset>
+</form>
+</div><div class="clearWrapper"></div><p><span><label class="label" for="boardHeights">Equal board heights:</label><input id="boardHeights" type="checkbox"></span><span><label class="label" for="boardWidthSingle">Single column boards:</label><input id="boardWidthSingle" type="checkbox"></span></p><div id="boardWrapper">
+<form class="" id="blackboard">
+<fieldset>
+   <legend><b>Blackboard</b></legend>
+   <label class="label" for="title">Tab title:</label><input id="title" size="40" type="text"><br>
+   <textarea style="width: 100%;" rows="10" wrap="virtual"></textarea><br>
+   <input value="Execute!" type="button"><input disabled="" value="Save" type="button"><input disabled="" value="Save to a new tab" type="button"><input value="Clear" type="button"><br>
+</fieldset>
+</form>
+<form class="" id="console">
+<fieldset>
+   <legend><b>Console</b></legend>
+   <div class="data"><pre></pre></div>
+   <input value="Clear" type="button">
+</fieldset>
+</form>
+</div><div class="clearWrapper"></div><form id="addRemovePanel">
+<fieldset>
+   <legend class="hover">Add/Remove panel</legend>
+   <div style="display: none;" class="hide">
+   <label class="label" for="panelTitle">Panel title:</label><input id="panelTitle" size="30" type="text"><br>
+   <input value="Add" type="button"><input value="Remove" type="button">
+   </div>
+</fieldset>
+</form><hr><p><span style="padding: 0.4em 0.8em; color: #003380; background-color: #66a3ff;">Load any tab to blackboard</span><span><label class="label" for="panelHeights">Equal panel heights:</label><input id="panelHeights" type="checkbox"></span><span><label class="label" for="panelWidthSingle">Single column panels:</label><input id="panelWidthSingle" type="checkbox"></span></p><div id="tabbedDataWrapper">
+<div class="gridTabbedData">
+<div class="tabbedData"><div class="titleBar"><p class="title enabled">my.Class</p><p class="load">Load tab</p></div><div class="tabs"><div class="tabBar"><div class="tab">Person</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Dreamer extends Person</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer implements class Pirate</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer implements object Pirate</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer + Scientist extend</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer + Scientist extend only functions</div><div class="close">X</div></div></div><div class="tabs"><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+var person = new Person('Jane');
+console.log(person.nam</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+var dreamer = new Dreamer('Dreamer', 'zzZZZ...I\'ll change the world today!');
+dreamer.wakeUp();
+console.log('dreamer.sleep=' + dreamer.sleep + ', Dreamer.sleep=' + Dreamer.sleep);</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true,
+      dream: 'who knows'
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+//var dreamer = new Dreamer('Dreamer', 'zzZZZ...I\'ll change the world today!');
+//dreamer.wakeUp();
+//console.log('dreamer.sleep=' + dreamer.sleep + ', Dreamer.sleep=' + Dreamer.sleep);
+
+//Class Scientist extends Dreamer
+var Scientist = g3.Class(Dreamer, {
+   STATIC: {
+      sleep: false
+   },
+   constructor: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      Scientist.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //Scientist.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = Scientist.Super.prototype.wakeUp;
+
+var scientist1 = new Scientist('Scientist1', 'zzZZZ...I\'ll change the world today!');
+scientist1.wakeUp();
+console.log('scientist1.sleep=' + scientist1.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist1.dream=' + scientist1.dream + ', Scientist.dream=' + Scientist.dream);
+
+var scientist2 = new Scientist('Scientist2', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist2.wakeUp();
+console.log('scientist2.sleep=' + scientist2.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist2.dream=' + scientist2.dream + ', Scientist.dream=' + Scientist.dream);</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+
+//Class Pirate
+var Pirate = g3.Class({
+   STATIC: {
+      like: 'rob'
+   },
+   rob: function() {
+      console.log('Hands up! This is a robbery by ' + this.name);
+   }
+});
+
+//Class Scientist extends Dreamer
+var Scientist = g3.Class(Dreamer, Pirate, {
+   STATIC: {
+      sleep: false
+   },
+   constructor: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      Scientist.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //Scientist.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = Scientist.Super.prototype.wakeUp;
+
+var scientist = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist.wakeUp();
+scientist.rob();
+console.log('scientist.sleep=' + scientist.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist.like=' + scientist.like + ', Scientist.like=' + Scientist.like);
+console.log('scientist instanceof Person? '+(scientist instanceof Person));
+console.log('scientist instanceof Dreamer? '+(scientist instanceof Dreamer));
+console.log('scientist instanceof Scientist? '+(scientist instanceof Scientist));
+console.log('scientist instanceof Pirate? '+(scientist instanceof Pirate));</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+
+//Object Pirate
+var Pirate = {
+   like: 'rob',
+   rob: function() {
+      console.log('Hands up! This is a robbery by ' + this.name);
+   }
+};
+
+//Class Scientist extends Dreamer
+var Scientist = g3.Class(Dreamer, Pirate, {
+   STATIC: {
+      sleep: false
+   },
+   constructor: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      Scientist.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //Scientist.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = Scientist.Super.prototype.wakeUp;
+
+var scientist = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist.wakeUp();
+scientist.rob();
+console.log('scientist.sleep=' + scientist.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist.like=' + scientist.like + ', Scientist.like=' + Scientist.like);
+console.log('scientist instanceof Person? '+(scientist instanceof Person));
+console.log('scientist instanceof Dreamer? '+(scientist instanceof Dreamer));
+console.log('scientist instanceof Scientist? '+(scientist instanceof Scientist));
+</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+
+
+//Class Scientist extends Dreamer
+var Scientist = g3.Class(Dreamer, {
+   STATIC: {
+      sleep: false
+   },
+   constructor: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      Scientist.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //Scientist.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = Scientist.Super.prototype.wakeUp;
+
+var scientist1 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist1.wakeUp();
+try{scientist1.rob();}catch(e){console.log('Error: '+e.message)}
+
+g3.Class.extend(Scientist.prototype, {
+   like: 'rob',
+   rob: function() {
+      console.log('Hands up! This is a robbery by ' + this.science + ' ' + this.name);
+   }
+});
+
+var scientist2 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Mechanic');
+scientist2.wakeUp();
+scientist2.rob();
+
+var scientist3 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Physics');
+
+console.log('scientist2.sleep=' + scientist2.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist2.like=' + scientist2.like + ', Scientist.like=' + Scientist.like);
+console.log('scientist3.like=' + scientist3.like);
+
+console.log('scientist2 instanceof Person? '+(scientist2 instanceof Person));
+console.log('scientist2 instanceof Dreamer? '+(scientist2 instanceof Dreamer));
+console.log('scientist2 instanceof Scientist? '+(scientist2 instanceof Scientist));
+</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+
+//Class Dreamer extends Person
+var Dreamer = g3.Class(Person, {
+   STATIC: {
+      sleep: true
+   },
+   constructor: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      Dreamer.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+
+
+//Class Scientist extends Dreamer
+var Scientist = g3.Class(Dreamer, {
+   STATIC: {
+      sleep: false
+   },
+   constructor: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      Scientist.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //Scientist.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = Scientist.Super.prototype.wakeUp;
+
+var scientist1 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist1.wakeUp();
+try{scientist1.rob();}catch(e){console.log('Error: '+e.message)}
+
+g3.Class.extend(Scientist.prototype, {
+   like: 'rob',
+   rob: function() {
+      console.log('Hands up! This is a robbery by ' + this.science + ' ' + this.name);
+   },
+}, false, 'function');
+
+var scientist2 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Mechanic');
+scientist2.wakeUp();
+scientist2.rob();
+
+var scientist3 = new Scientist('Scientist', 'zzZZZ...I\'ll change the world today!', 'Physics');
+
+console.log('scientist2.sleep=' + scientist2.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist2.like=' + scientist2.like + ', Scientist.like=' + Scientist.like);
+console.log('scientist3.like=' + scientist3.like);
+console.log('scientist2 instanceof Person? '+(scientist2 instanceof Person));
+console.log('scientist2 instanceof Dreamer? '+(scientist2 instanceof Dreamer));
+console.log('scientist2 instanceof Scientist? '+(scientist2 instanceof Scientist));
+</pre></div></div></div></div>
+<div class="gridTabbedData"><div class="tabbedData"><div class="titleBar"><p class="title">DominikGuzei.Class</p><p class="load">Load tab</p></div><div class="tabs"><div class="tabBar"><div class="tab">Person</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Dreamer extends Person</div><div class="close">X</div></div><div class="tabBar"><div class="tab">Scientist extends Dreamer</div><div class="close">X</div></div></div><div class="tabs"><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+var person = new Person('Jane');
+console.log(person.name);</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var DreamerC = g3.Class('Dreamer', {
+   Extends: Person,
+   STATIC: {
+      sleep: true
+   },
+   initialize: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      DreamerC.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+var dreamer = new Dreamer('Dreamer', 'zzZZZ...I\'ll change the world today!');
+dreamer.wakeUp();
+console.log('dreamer.sleep=' + dreamer.sleep + ', Dreamer.sleep=' + Dreamer.sleep);</pre></div><div class="data"><pre>function Person(name){
+   this.name = name;
+}
+//var person = new Person('Jane');
+//console.log(person.name);
+
+//Class Dreamer extends Person
+var DreamerC = g3.Class('Dreamer', {
+   Extends: Person,
+   STATIC: {
+      sleep: true,
+      dream: 'who knows'
+   },
+   initialize: function(name, dream) {
+      //Explicit call to Dreamer.Super === Person
+      DreamerC.Super.call(this, name);
+      this.dream = dream;
+   },
+   wakeUp: function() {
+      console.log(this.name + ': Wake up! ' + this.dream);
+   }
+});
+//var dreamer = new Dreamer('Dreamer', 'zzZZZ...I\'ll change the world today!');
+//dreamer.wakeUp();
+//console.log('dreamer.sleep=' + dreamer.sleep + ', Dreamer.sleep=' + Dreamer.sleep);
+
+//Class Scientist extends Dreamer
+var ScientistC = g3.Class('Scientist', {
+   Extends: Dreamer,
+   STATIC: {
+      sleep: false
+   },
+   initialize: function(name, dream, science) {
+      //Explicit call to Scientist.Super === Dreamer
+      ScientistC.Super.call(this, name, dream);
+      this.science = science;
+   },
+   wakeUp: function() {
+      if(this.science)
+         console.log(this.science + ' ' + this.name + ': Wake up! ' + this.dream);
+      else
+         super_wakeUp.call(this);
+         //ScientistC.Super.prototype.wakeUp.call(this);
+   }
+});
+var super_wakeUp = ScientistC.Super.prototype.wakeUp;
+
+var scientist1 = new Scientist('Scientist1', 'zzZZZ...I\'ll change the world today!');
+scientist1.wakeUp();
+console.log('scientist1.sleep=' + scientist1.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist1.dream=' + scientist1.dream + ', Scientist.dream=' + Scientist.dream);
+
+var scientist2 = new Scientist('Scientist2', 'zzZZZ...I\'ll change the world today!', 'Nuclear');
+scientist2.wakeUp();
+console.log('scientist2.sleep=' + scientist2.sleep + ', Scientist.sleep=' + Scientist.sleep);
+console.log('scientist2.dream=' + scientist2.dream + ', Scientist.dream=' + Scientist.dream);</pre></div></div></div>
+</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script> window.jQuery || document.write('<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.0.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="../../jquery/jquery-1.10.2.js"><\/script>')</script>
+<script src="../../g3/g3debug.js"></script>
+<script src="../../view/g3evaluator/g3evaluator.js"></script>
+<script>
+$(function() {
+   g3.evaluator.getInstance();
+});
+</script>
+</body>
+</html>
